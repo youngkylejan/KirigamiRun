@@ -33,7 +33,7 @@ public class HeroScript : MonoBehaviour {
 			flap = true;
 		}
 
-		rigidbody2D.velocity = new Vector2(100, rigidbody2D.velocity.y);
+		rigidbody2D.velocity = new Vector2(10, rigidbody2D.velocity.y);
 	}
 
 	void FixedUpdate()
