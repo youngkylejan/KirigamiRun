@@ -3,11 +3,8 @@ using System.Collections;
 
 public class GroundScript : MonoBehaviour {
 
-	void OnCollisionEnter2D(Collision2D other)
-	{
-		if (other.gameObject.name == "hero") 
-		{
-			print ("hi");
+	void OnCollisionEnter2D(Collision2D other){
+		if (other.gameObject.name == "Hero") {
 			other.rigidbody.velocity = new Vector3(other.rigidbody.velocity.x, 0, 0);
 		}
 	}
