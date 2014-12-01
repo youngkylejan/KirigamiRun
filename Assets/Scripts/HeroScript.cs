@@ -93,7 +93,6 @@ public class HeroScript : MonoBehaviour {
 				flap = false;
 				anim.SetTrigger("Jump");
 				rigidbody2D.AddForce(new Vector2(0, jumpForce));
-
 				jumping = true;
 			}
 
