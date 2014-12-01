@@ -53,7 +53,7 @@ public class MonsterSpawnerScript : MonoBehaviour {
 			newMonster.transform.position = pos;
 			monsterList.Add(newMonster);
 
-			yield return new WaitForSeconds(Random.Range(0.5f, 3f));
+			yield return new WaitForSeconds(Random.Range(1f, 3f));
 		}
 	}
 	
