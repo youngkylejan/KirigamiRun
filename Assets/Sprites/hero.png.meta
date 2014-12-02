@@ -6,6 +6,7 @@ TextureImporter:
     21300002: hero_1
     21300004: hero_2
     21300006: hero_3
+    21300008: hero_4
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -80,10 +81,20 @@ TextureImporter:
     - name: hero_3
       rect:
         serializedVersion: 2
-        x: 727
-        y: 24
-        width: 324
-        height: 539
+        x: 800
+        y: 29
+        width: 321
+        height: 534
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: hero_4
+      rect:
+        serializedVersion: 2
+        x: 1301
+        y: 30
+        width: 474
+        height: 522
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
