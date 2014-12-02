@@ -51,6 +51,40 @@ namespace Kirigami {
 			groundCollection.Add (ground);
 		}
 
+		void GeneratorGrounds() {
+
+			Random.seed = System.Guid.NewGuid().GetHashCode();
+			int groundNumber = Random.Range (1, 4);
+			bool firstFlag = true;
+
+			while (groundNumber > 0) {
+
+				GameObject newGround = (GameObject)Instantiate (groundPrefab);
+				
+				Random.seed = System.Guid.NewGuid().GetHashCode();
+				
+				Vector3 pos = new Vector3();
+				pos.z = -2;
+
+				GameObject lastGround = groundCollection[groundCollection.Count - 1];
+
+				if (firstFlag) {
+					pos.x = lastGround.transform.position.x + Random.Range(5f, 10f);
+					pos.y = pos.y + Random.Range(minDeltaHeight, maxDeltaHeight);
+					firstFlag = false;
+				} else {
+					pos.x = lastGround.transform.position.x + groundWidth;
+					pos.y = lastGround.transform.position.y;
+				}
+				
+				newGround.transform.position = pos;
+				newGround.tag = "Scenery";
+				groundCollection.Add(newGround);
+
+				groundNumber--;
+			}
+		}
+
 		IEnumerator Generator() {
 
 			while(true) {
@@ -61,19 +95,7 @@ namespace Kirigami {
 				if (lastGround.transform.position.x  - generatorPos.x > mapLength) {
 					yield return new WaitForSeconds(generateRate);
 				} else {
-					GameObject newGround = (GameObject)Instantiate (groundPrefab);
-
-					Random.seed = System.Guid.NewGuid().GetHashCode();
-
-					Vector3 pos = new Vector3();
-					pos.x = lastGround.transform.position.x + Random.Range(5f, 10f);
-					pos.y = pos.y + Random.Range(minDeltaHeight, maxDeltaHeight);
-					pos.z = -2;
-
-					newGround.transform.position = pos;
-					newGround.tag = "Scenery";
-
-					groundCollection.Add(newGround);
+					GeneratorGrounds();
 				}
 
 				yield return new WaitForSeconds(generateRate);
