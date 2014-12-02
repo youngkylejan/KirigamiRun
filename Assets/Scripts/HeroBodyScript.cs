@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace Kirigami {
+namespace Hero {
+
 public class HeroBodyScript : MonoBehaviour {
 
 	Animator anim;					//reference to the animator component
@@ -43,4 +46,7 @@ public class HeroBodyScript : MonoBehaviour {
 		print ("BODY COLLIDE " + other.gameObject.name + " " + Time.time);
 		heroScript.FallDown ();
 	}
+}
+
+}
 }

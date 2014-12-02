@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace Kirigami {
+namespace Hero {
+
 public class HeroScript : MonoBehaviour {
 
 	public float baseSpeed = 10.0f;
@@ -144,4 +147,7 @@ public class HeroScript : MonoBehaviour {
 			print ("BEGIN ACELERATING " + currentSpeed);
 		}
 	}
+}
+
+}
 }

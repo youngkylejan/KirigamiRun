@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace Kirigami {
+namespace Hero {
+
 public class GroundCheckScript : MonoBehaviour {
 
 	HeroScript heroScript;
@@ -20,4 +23,7 @@ public class GroundCheckScript : MonoBehaviour {
 			heroScript.Ground();
 		}
 	}
+}
+
+}
 }
