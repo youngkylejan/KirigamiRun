@@ -44,7 +44,7 @@ public class MapGeneratorScript : MonoBehaviour {
 		pos.z = -2;
 
 		ground.transform.position = pos;
-		ground.tag = "Ground";
+		ground.tag = "Scenery";
 
 		groundCollection.Add (ground);
 	}
@@ -62,12 +62,14 @@ public class MapGeneratorScript : MonoBehaviour {
 				GameObject newGround = (GameObject)Instantiate (groundPrefab);
 
 				Random.seed = System.Guid.NewGuid().GetHashCode();
+
 				Vector3 pos = new Vector3();
-				pos.x = lastGround.transform.position.x + Random.Range(2f, 5f);
+				pos.x = lastGround.transform.position.x + Random.Range(10f, 20f);
 				pos.y = pos.y + Random.Range(minDeltaHeight, maxDeltaHeight);
 				pos.z = -2;
+
 				newGround.transform.position = pos;
-				newGround.tag = "Ground";
+				newGround.tag = "Scenery";
 
 				groundCollection.Add(newGround);
 			}
