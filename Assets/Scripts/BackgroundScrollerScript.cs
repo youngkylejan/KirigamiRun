@@ -21,7 +21,7 @@ namespace Kirigami {
 
 		void GenerateCloud(Vector3 pos) {
 			Random.seed = System.Guid.NewGuid().GetHashCode();
-			int number = Random.Range (0, 3);
+			int number = Random.Range (0, 4);
 
 			while (number > 0) {
 				GameObject cloud = (GameObject)Instantiate(cloud_prefab);
@@ -50,7 +50,7 @@ namespace Kirigami {
 
 		void GenerateSkyMonster(Vector3 pos) {
 			Random.seed = System.Guid.NewGuid().GetHashCode();
-			int number = Random.Range (0, 1);
+			int number = Random.Range (0, 2);
 			
 			while (number > 0) {
 				GameObject skyMonster = (GameObject)Instantiate(skyMonster_prefab);
