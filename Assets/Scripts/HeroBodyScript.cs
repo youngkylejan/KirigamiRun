@@ -47,7 +47,7 @@ public class HeroBodyScript : MonoBehaviour {
 		if (other.gameObject.tag == "DeadBlock") {
 			heroScript.Die();
 		} else {
-			heroScript.FallDown ();
+			heroScript.Die ();
 		}
 	}
 }

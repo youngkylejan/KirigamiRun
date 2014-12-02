@@ -28,6 +28,7 @@ public class HeroScript : MonoBehaviour {
 	     isStarted = false;
 	int jumpTimes = 0;
 
+//	Kirigami.GameControllerScript gameControllerScript;
 
 	// Public functions
 	public void FallDown() {
@@ -50,13 +51,19 @@ public class HeroScript : MonoBehaviour {
 		if (!isStarted) {
 			isStarted = true;
 			bodyScript.TriggerStart();
+			StartCoroutine ("IncreasingSpeedRandomly");
 		}
 	}
 
 	public void Die() {
 		isStarted = false;
-		isFalldown = true;
+		if (!isFalldown) {
+			toFalldown = true;
+		}
 		rigidbody2D.velocity = new Vector2(0, 0);
+
+		Kirigami.GameControllerScript.current.HeroDied();
+		StopCoroutine("IncreasingSpeedRandomly");
 	}
 
 	public Vector2 CurrentVelocity() {
@@ -69,7 +76,6 @@ public class HeroScript : MonoBehaviour {
 	void Start () {
 		bodyScript = gameObject.GetComponentInChildren<HeroBodyScript> ();
 		currentSpeed = baseSpeed;
-		StartCoroutine ("IncreasingSpeedRandomly");
 	}
 
 	bool HasKeyDownEvent() {
