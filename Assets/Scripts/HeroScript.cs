@@ -14,24 +14,45 @@ public class HeroScript : MonoBehaviour {
 	float currentSpeed;
 	const int MAX_JUMP_TIMES = 2;
 	HeroBodyScript bodyScript;
-	Transform groundCheck;
 
 	bool toJump = false, 
 		 toStopJumping = false,
 		 toGround = false,
-		 toFalldown = false;
-	bool isGrounded = false,
-		 isJumping = false,
+		 toFalldown = false,
+	     toRecover = false;
+	bool isJumping = false,
 		 isFalldown = false;
 	int jumpTimes = 0;
 
+
+	// Public functions
+	public void FallDown() {
+		toFalldown = true;
+	}
+	
+	public void Ground() {
+		if (!isJumping)
+			return;
+		toGround = true;
+		jumpTimes = 0;
+	}
+
+	public void Recover() {
+		if (!isFalldown) return;
+		toRecover = true;
+	}
+
+	public float CurrentVelocity() {
+		return currentSpeed;
+	}
+
+	// Private functions
 
 	// Use this for initialization
 	void Start () {
 		bodyScript = gameObject.GetComponentInChildren<HeroBodyScript> ();
 		currentSpeed = baseSpeed;
-//		StartCoroutine ("IncreasingSpeedRandomly");
-		groundCheck = transform.Find ("GroundCheckForHero");
+		StartCoroutine ("IncreasingSpeedRandomly");
 	}
 
 	bool HasKeyDownEvent() {
@@ -48,22 +69,13 @@ public class HeroScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		isGrounded = Physics2D.Linecast(transform.position, 
-		                              groundCheck.position, 
-		                              1 << LayerMask.NameToLayer("Ground")); 
-
 		if (!isFalldown) {
-			if (isGrounded && isJumping) {
-				jumpTimes = 0;
-				toGround = true;
-			}
-
 			if (HasKeyDownEvent()) {
 				if (jumpTimes < MAX_JUMP_TIMES) {
 					jumpTimes++;
 					toJump = true;
 				}
-			} else if (HasKeyReleaseEvent()) {
+			} else if (HasKeyReleaseEvent() && isJumping && !toGround) {
 				toStopJumping = true;
 			}
 		}
@@ -73,41 +85,39 @@ public class HeroScript : MonoBehaviour {
 		if (toJump) {
 			toJump = false;
 			isJumping = true;
-			if (jumpTimes == 1) {
-				bodyScript.TriggerJump();
-			}
+//			if (jumpTimes != 1) {
+//				bodyScript.TriggerGrounded();
+//			}
+			bodyScript.TriggerJump();
 			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
 			rigidbody2D.AddForce(new Vector2(0, jumpForce));
-		}
-
-		if (toStopJumping) {
+		} else if (toStopJumping) {
 			toStopJumping = false;
 			if (rigidbody2D.velocity.y > 0) {
 				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
 			}
-		}
-
-		if (toGround) {
-			toGround = false;
+		} else if (toGround) {
+ 			toGround = false;
 			isJumping = false;
 			bodyScript.TriggerGrounded();
-		}
 
-		if (toFalldown) {
+		} else if (toFalldown) {
 			toFalldown = false;
 			isFalldown = true;
 
 			bodyScript.TriggerFallDown();
 			StopCoroutine("IncreasingSpeedRandomly");
+		} else if (toRecover) {
+			toRecover = false;
+			isFalldown = false;
+			bodyScript.TriggerRecover();
+			StartCoroutine("IncreasingSpeedRandomly");
+			currentSpeed = baseSpeed;
 		}
 
 		if (!isFalldown) {
 			rigidbody2D.velocity = new Vector2(currentSpeed, rigidbody2D.velocity.y);
 		}
-	}
-
-	public void FallDown() {
-		toFalldown = true;
 	}
 
 	IEnumerator IncreasingSpeedRandomly() {
@@ -119,7 +129,7 @@ public class HeroScript : MonoBehaviour {
 			// Vn = Vn-1 + a * delta_t
 			if (currentSpeed >= MAX_SPEED) continue;
 
-			float a = 1.0f / Mathf.Pow((currentSpeed / MAX_SPEED) * 2 + 0.5f, 5.0f);
+			float a = 1.0f / Mathf.Pow((currentSpeed / MAX_SPEED) * 2.5f + 1.5f, 2.0f);
 			currentSpeed += a * waitSec;
 			print ("BEGIN ACELERATING " + currentSpeed);
 		}

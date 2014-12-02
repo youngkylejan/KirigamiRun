@@ -31,8 +31,12 @@ public class HeroBodyScript : MonoBehaviour {
 		anim.SetTrigger ("Fall");
 	}
 
+	public void TriggerRecover() {
+		anim.SetTrigger ("Recover");
+	}
+
 	void OnCollisionEnter2D(Collision2D other) {
-		print ("BODY COLLIDE " + other.gameObject.name);
+		print ("BODY COLLIDE " + other.gameObject.name + " " + Time.time);
 		heroScript.FallDown ();
 	}
 }
