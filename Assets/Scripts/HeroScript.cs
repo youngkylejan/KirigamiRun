@@ -53,8 +53,14 @@ public class HeroScript : MonoBehaviour {
 		}
 	}
 
-	public float CurrentVelocity() {
-		return currentSpeed;
+	public void Die() {
+		isStarted = false;
+		isFalldown = true;
+		rigidbody2D.velocity = new Vector2(0, 0);
+	}
+
+	public Vector2 CurrentVelocity() {
+		return rigidbody2D.velocity;
 	}
 
 	// Private functions

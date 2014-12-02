@@ -44,7 +44,11 @@ public class HeroBodyScript : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other) {
 		print ("BODY COLLIDE " + other.gameObject.name + " " + Time.time);
-		heroScript.FallDown ();
+		if (other.gameObject.tag == "DeadBlock") {
+			heroScript.Die();
+		} else {
+			heroScript.FallDown ();
+		}
 	}
 }
 
