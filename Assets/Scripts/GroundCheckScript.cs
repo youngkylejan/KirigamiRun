@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace Kirigami {
+namespace Hero {
+
 public class GroundCheckScript : MonoBehaviour {
 
 	HeroScript heroScript;
@@ -18,6 +21,11 @@ public class GroundCheckScript : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other) {
 		if (other.gameObject.tag == "Scenery") {
 			heroScript.Ground();
+		} else if (other.gameObject.tag == "DeadBlock") {
+			heroScript.Die();
 		}
 	}
+}
+
+}
 }

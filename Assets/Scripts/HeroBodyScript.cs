@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace Kirigami {
+namespace Hero {
+
 public class HeroBodyScript : MonoBehaviour {
 
 	Animator anim;					//reference to the animator component
@@ -35,8 +38,19 @@ public class HeroBodyScript : MonoBehaviour {
 		anim.SetTrigger ("Recover");
 	}
 
+	public void TriggerStart() {
+		anim.SetTrigger ("Start");
+	}
+
 	void OnCollisionEnter2D(Collision2D other) {
 		print ("BODY COLLIDE " + other.gameObject.name + " " + Time.time);
-		heroScript.FallDown ();
+		if (other.gameObject.tag == "DeadBlock") {
+			heroScript.Die();
+		} else {
+			heroScript.Die ();
+		}
 	}
+}
+
+}
 }

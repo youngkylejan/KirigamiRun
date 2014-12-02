@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace Kirigami {
+namespace Hero {
+
 public class HeroScript : MonoBehaviour {
 
 	public float baseSpeed = 10.0f;
@@ -21,9 +24,11 @@ public class HeroScript : MonoBehaviour {
 		 toFalldown = false,
 	     toRecover = false;
 	bool isJumping = false,
-		 isFalldown = false;
+		 isFalldown = false,
+	     isStarted = false;
 	int jumpTimes = 0;
 
+//	Kirigami.GameControllerScript gameControllerScript;
 
 	// Public functions
 	public void FallDown() {
@@ -42,8 +47,27 @@ public class HeroScript : MonoBehaviour {
 		toRecover = true;
 	}
 
-	public float CurrentVelocity() {
-		return currentSpeed;
+	public void StartRunning() {
+		if (!isStarted) {
+			isStarted = true;
+			bodyScript.TriggerStart();
+			StartCoroutine ("IncreasingSpeedRandomly");
+		}
+	}
+
+	public void Die() {
+		isStarted = false;
+		if (!isFalldown) {
+			toFalldown = true;
+		}
+		rigidbody2D.velocity = new Vector2(0, 0);
+
+		Kirigami.GameControllerScript.current.HeroDied();
+		StopCoroutine("IncreasingSpeedRandomly");
+	}
+
+	public Vector2 CurrentVelocity() {
+		return rigidbody2D.velocity;
 	}
 
 	// Private functions
@@ -52,7 +76,6 @@ public class HeroScript : MonoBehaviour {
 	void Start () {
 		bodyScript = gameObject.GetComponentInChildren<HeroBodyScript> ();
 		currentSpeed = baseSpeed;
-		StartCoroutine ("IncreasingSpeedRandomly");
 	}
 
 	bool HasKeyDownEvent() {
@@ -77,6 +100,8 @@ public class HeroScript : MonoBehaviour {
 				}
 			} else if (HasKeyReleaseEvent() && isJumping && !toGround) {
 				toStopJumping = true;
+			} else if (Input.GetKeyDown(KeyCode.RightArrow)) {
+				StartRunning();
 			}
 		}
 	}
@@ -93,9 +118,9 @@ public class HeroScript : MonoBehaviour {
 			rigidbody2D.AddForce(new Vector2(0, jumpForce));
 		} else if (toStopJumping) {
 			toStopJumping = false;
-//			if (rigidbody2D.velocity.y > 0) {
-//				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
-//			}
+			if (rigidbody2D.velocity.y > 0) {
+				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
+			}
 		} else if (toGround) {
  			toGround = false;
 			isJumping = false;
@@ -115,7 +140,7 @@ public class HeroScript : MonoBehaviour {
 			currentSpeed = baseSpeed;
 		}
 
-		if (!isFalldown) {
+		if (isStarted && !isFalldown) {
 			rigidbody2D.velocity = new Vector2(currentSpeed, rigidbody2D.velocity.y);
 		}
 	}
@@ -134,4 +159,7 @@ public class HeroScript : MonoBehaviour {
 			print ("BEGIN ACELERATING " + currentSpeed);
 		}
 	}
+}
+
+}
 }
