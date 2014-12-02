@@ -146,7 +146,7 @@ public class HeroScript : MonoBehaviour {
 	}
 
 	IEnumerator IncreasingSpeedRandomly() {
-		const float MAX_SPEED = 30.0f;
+		const float MAX_SPEED = 25.0f;
 		while (!isFalldown) {
 			int waitSec = Random.Range(1, 5);
 			yield return new WaitForSeconds(waitSec);

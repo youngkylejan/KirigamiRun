@@ -5,6 +5,7 @@ public class CameraFollowerScript : MonoBehaviour {
 	
 	public Transform player;			//target for the camera to follow
 	public float xOffset;				//how much x-axis space should be between the camera and target
+	public float yOffset;
 
 	public float xMargin = 1f;		// Distance in the x axis the player can move before the camera follows.
 	public float yMargin = 1f;		// Distance in the y axis the player can move before the camera follows.
@@ -23,6 +24,7 @@ public class CameraFollowerScript : MonoBehaviour {
 		//follow the target on the x-axis only
 		transform.position = new Vector3 (player.position.x + xOffset, 
 		                                  transform.position.y, 
+//		                                  player.position.y + yOffset,
 		                                  transform.position.z);
 	}
 
