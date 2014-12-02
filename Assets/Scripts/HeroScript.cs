@@ -93,9 +93,9 @@ public class HeroScript : MonoBehaviour {
 			rigidbody2D.AddForce(new Vector2(0, jumpForce));
 		} else if (toStopJumping) {
 			toStopJumping = false;
-			if (rigidbody2D.velocity.y > 0) {
-				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
-			}
+//			if (rigidbody2D.velocity.y > 0) {
+//				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
+//			}
 		} else if (toGround) {
  			toGround = false;
 			isJumping = false;
