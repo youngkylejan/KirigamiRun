@@ -11,128 +11,116 @@ public class HeroScript : MonoBehaviour {
 	public float normalGravityScale = 5;
 	public float falldownGravityScale = 1.5f;
 
-	Animator anim;					//reference to the animator component
-	bool flap = false;
-	bool grounded = false, jumping = false, felldown = false, dead = false;
-	bool to_falldown = false, to_recover = false, to_die = false;
-	bool acelerating = false;
-	float currentSpeed = 10.0f;
-
+	float currentSpeed;
+	const int MAX_JUMP_TIMES = 2;
+	HeroBodyScript bodyScript;
 	Transform groundCheck;
 
-	void Awake() {
-		rigidbody2D.velocity = new Vector2(10, 0);
-		groundCheck = transform.Find ("GroundCheck");
-	}
+	bool toJump = false, 
+		 toStopJumping = false,
+		 toGround = false,
+		 toFalldown = false;
+	bool isGrounded = false,
+		 isJumping = false,
+		 isFalldown = false;
+	int jumpTimes = 0;
+
 
 	// Use this for initialization
 	void Start () {
-		anim = GetComponent<Animator> ();
+		bodyScript = gameObject.GetComponentInChildren<HeroBodyScript> ();
+		currentSpeed = baseSpeed;
+//		StartCoroutine ("IncreasingSpeedRandomly");
+		groundCheck = transform.Find ("GroundCheckForHero");
+	}
 
-		StartCoroutine ("IncreasingSpeedRandomly");
+	bool HasKeyDownEvent() {
+		return (Input.touchCount > 0
+					&& Input.touches[0].phase == TouchPhase.Began)
+			   || (Input.GetKeyDown(KeyCode.UpArrow));
+	}
+
+	bool HasKeyReleaseEvent() {
+		return (Input.touchCount > 0
+		        	&& Input.touches[0].phase == TouchPhase.Ended)
+			|| (Input.GetKeyUp(KeyCode.UpArrow));
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		grounded = Physics2D.Linecast(transform.position, 
+		isGrounded = Physics2D.Linecast(transform.position, 
 		                              groundCheck.position, 
 		                              1 << LayerMask.NameToLayer("Ground")); 
-		if (!felldown) {
-			if (jumping && grounded) {
-				jumping = false;
-				anim.SetTrigger("Grounded");
+
+		if (!isFalldown) {
+			if (isGrounded && isJumping) {
+				jumpTimes = 0;
+				toGround = true;
 			}
 
-			if (Input.GetKeyDown(KeyCode.UpArrow) && grounded && !flap) {
-				//			transform.position = new Vector3(transform.position.x+1,transform.position.y,0);
-				flap = true;
-			} else if (Input.GetKeyDown(KeyCode.DownArrow)) {
-				to_falldown = true;
+			if (HasKeyDownEvent()) {
+				if (jumpTimes < MAX_JUMP_TIMES) {
+					jumpTimes++;
+					toJump = true;
+				}
+			} else if (HasKeyReleaseEvent()) {
+				toStopJumping = true;
 			}
 		}
 	}
 
 	void FixedUpdate() {
-		if (to_falldown) {
-			anim.SetTrigger("Fall");
-			felldown = true;
-			to_falldown = false;
-
-			rigidbody2D.gravityScale = falldownGravityScale;
-			rigidbody2D.velocity = new Vector2(baseSpeed, 0);
-			rigidbody2D.AddForce(falldownForce);
-			StopCoroutine("IncreasingSpeedRandomly");
-			StartCoroutine("ReadyToRecover");
-
-			return;
-		} else if (to_recover) {
-			anim.SetTrigger("Recover");
-			felldown = false;
-			to_recover = false;
-			rigidbody2D.gravityScale = normalGravityScale;
-			currentSpeed = baseSpeed;
-
-//			StartCoroutine("AcelerateToCurrentSpeed");
-			StartCoroutine("IncreasingSpeedRandomly");
-			return;
-		} else if (to_die) {
-			anim.SetTrigger("Fall");
-			felldown = true;
-			dead = true;
-
-			rigidbody2D.gravityScale = falldownGravityScale;
-			rigidbody2D.velocity = new Vector2(baseSpeed, 0);
-			rigidbody2D.AddForce(falldownForce);
-			StopCoroutine("IncreasingSpeedRandomly");
-			return;
+		if (toJump) {
+			toJump = false;
+			isJumping = true;
+			if (jumpTimes == 1) {
+				bodyScript.TriggerJump();
+			}
+			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
+			rigidbody2D.AddForce(new Vector2(0, jumpForce));
 		}
 
-		if (!felldown) {
-		if (flap) {
-				//			transform.position = new Vector3(transform.position.x+1,transform.position.y,0);
-				flap = false;
-				anim.SetTrigger("Jump");
-				rigidbody2D.AddForce(new Vector2(0, jumpForce));
-				jumping = true;
-			}
-
-			if (!acelerating) {
-				rigidbody2D.velocity = new Vector2(currentSpeed, rigidbody2D.velocity.y);
+		if (toStopJumping) {
+			toStopJumping = false;
+			if (rigidbody2D.velocity.y > 0) {
+				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
 			}
 		}
-	}
 
-	void FallDown() {
-		anim.SetTrigger ("Fall");
-	}
-
-	void Recover() {
-		anim.SetTrigger ("Recover");
-	}
-
-	IEnumerator ReadyToRecover() {
-		if (to_recover)
-			yield return null;
-		yield return new WaitForSeconds(recoverSeconds);
-		to_recover = true;
-	}
-
-	IEnumerator AcelerateToCurrentSpeed() {
-		acelerating = true;
-		while (rigidbody2D.velocity.x < currentSpeed) {
-			rigidbody2D.AddForce(new Vector2(acelerateForce, 0));
-			print ("ACELE CURR " + rigidbody2D.velocity);
-			yield return null;
+		if (toGround) {
+			toGround = false;
+			isJumping = false;
+			bodyScript.TriggerGrounded();
 		}
-		acelerating = false;
+
+		if (toFalldown) {
+			toFalldown = false;
+			isFalldown = true;
+
+			bodyScript.TriggerFallDown();
+			StopCoroutine("IncreasingSpeedRandomly");
+		}
+
+		if (!isFalldown) {
+			rigidbody2D.velocity = new Vector2(currentSpeed, rigidbody2D.velocity.y);
+		}
+	}
+
+	public void FallDown() {
+		toFalldown = true;
 	}
 
 	IEnumerator IncreasingSpeedRandomly() {
-		while (!dead) {
-			yield return new WaitForSeconds(Random.Range(1, 10));
+		const float MAX_SPEED = 30.0f;
+		while (!isFalldown) {
+			int waitSec = Random.Range(1, 5);
+			yield return new WaitForSeconds(waitSec);
 
-//			acelerating = true;
-			currentSpeed += Mathf.Log10(currentSpeed / 2.0f);
+			// Vn = Vn-1 + a * delta_t
+			if (currentSpeed >= MAX_SPEED) continue;
+
+			float a = 1.0f / Mathf.Pow((currentSpeed / MAX_SPEED) * 2 + 0.5f, 5.0f);
+			currentSpeed += a * waitSec;
 			print ("BEGIN ACELERATING " + currentSpeed);
 		}
 	}
