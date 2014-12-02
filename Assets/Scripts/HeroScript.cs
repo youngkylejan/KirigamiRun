@@ -21,7 +21,8 @@ public class HeroScript : MonoBehaviour {
 		 toFalldown = false,
 	     toRecover = false;
 	bool isJumping = false,
-		 isFalldown = false;
+		 isFalldown = false,
+	     isStarted = false;
 	int jumpTimes = 0;
 
 
@@ -40,6 +41,13 @@ public class HeroScript : MonoBehaviour {
 	public void Recover() {
 		if (!isFalldown) return;
 		toRecover = true;
+	}
+
+	public void StartRunning() {
+		if (!isStarted) {
+			isStarted = true;
+			bodyScript.TriggerStart();
+		}
 	}
 
 	public float CurrentVelocity() {
@@ -77,6 +85,8 @@ public class HeroScript : MonoBehaviour {
 				}
 			} else if (HasKeyReleaseEvent() && isJumping && !toGround) {
 				toStopJumping = true;
+			} else if (Input.GetKeyDown(KeyCode.RightArrow)) {
+				StartRunning();
 			}
 		}
 	}
@@ -93,9 +103,9 @@ public class HeroScript : MonoBehaviour {
 			rigidbody2D.AddForce(new Vector2(0, jumpForce));
 		} else if (toStopJumping) {
 			toStopJumping = false;
-//			if (rigidbody2D.velocity.y > 0) {
-//				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
-//			}
+			if (rigidbody2D.velocity.y > 0) {
+				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
+			}
 		} else if (toGround) {
  			toGround = false;
 			isJumping = false;
@@ -115,7 +125,7 @@ public class HeroScript : MonoBehaviour {
 			currentSpeed = baseSpeed;
 		}
 
-		if (!isFalldown) {
+		if (isStarted && !isFalldown) {
 			rigidbody2D.velocity = new Vector2(currentSpeed, rigidbody2D.velocity.y);
 		}
 	}
