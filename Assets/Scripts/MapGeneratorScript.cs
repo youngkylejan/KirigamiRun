@@ -43,7 +43,7 @@ namespace Kirigami {
 			Random.seed = System.Guid.NewGuid().GetHashCode();
 			pos.x = transform.position.x + mapLength + Random.Range (2f, 5f);
 			pos.y = pos.y + Random.Range(minDeltaHeight, maxDeltaHeight);
-			pos.z = -2;
+			pos.z = ground.transform.position.z;
 
 			ground.transform.position = pos;
 			ground.tag = "Scenery";
@@ -64,7 +64,6 @@ namespace Kirigami {
 				Random.seed = System.Guid.NewGuid().GetHashCode();
 				
 				Vector3 pos = new Vector3();
-				pos.z = -2;
 
 				GameObject lastGround = groundCollection[groundCollection.Count - 1];
 
@@ -76,7 +75,8 @@ namespace Kirigami {
 					pos.x = lastGround.transform.position.x + groundWidth;
 					pos.y = lastGround.transform.position.y;
 				}
-				
+
+				pos.z = newGround.transform.position.z;
 				newGround.transform.position = pos;
 				newGround.tag = "Scenery";
 				groundCollection.Add(newGround);
