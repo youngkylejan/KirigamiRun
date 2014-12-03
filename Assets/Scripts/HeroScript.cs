@@ -127,7 +127,9 @@ public class HeroScript : MonoBehaviour {
 		} else if (toFalldown) {
 			toFalldown = false;
 			isFalldown = true;
-
+			if (rigidbody2D.velocity.y > 0) {
+				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
+			}
 			bodyScript.TriggerFallDown();
 			StopCoroutine("IncreasingSpeedRandomly");
 		} else if (toRecover) {
