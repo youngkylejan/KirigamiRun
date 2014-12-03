@@ -9,7 +9,7 @@ public class CameraFollowerScript : MonoBehaviour {
 	
 	public Transform player;			//target for the camera to follow
 	float xOffset;						//how much x-axis space should be between the camera and target
-	float yOffset;
+	public float yOffset;
 
 	public float xMargin = 1f;		// Distance in the x axis the player can move before the camera follows.
 	public float yMargin = 1f;		// Distance in the y axis the player can move before the camera follows.
@@ -39,12 +39,12 @@ public class CameraFollowerScript : MonoBehaviour {
 
 	bool CheckXMargin() {
 		// Returns true if the distance between the camera and the player in the x axis is greater than the x margin.
-		return Mathf.Abs(transform.position.x - player.position.x) > xMargin;
+		return Mathf.Abs(transform.position.x - (player.position.x + xOffset)) > xMargin;
 	}
 	
 	bool CheckYMargin() {
 		// Returns true if the distance between the camera and the player in the y axis is greater than the y margin.
-		return Mathf.Abs(transform.position.y - player.position.y) > yMargin;
+		return Mathf.Abs(transform.position.y - (player.position.y + yOffset)) > yMargin;
 	}
 
 	public void ReadyToStartGame() {
@@ -79,7 +79,7 @@ public class CameraFollowerScript : MonoBehaviour {
 		
 		// If the player has moved beyond the x margin...
 //		if(CheckXMargin())
-//			// ... the target x coordinate should be a Lerp between the camera's current x position and the player's current x position.
+//			// ... the target x coordinate should be a Lecrp between the camera's current x position and the player's current x position.
 //			targetX = Mathf.Lerp(transform.position.x, player.position.x + xOffset, xSmooth * Time.deltaTime);
 //		
 		// If the player has moved beyond the y margin...
