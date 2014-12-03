@@ -12,13 +12,18 @@ public class GameControllerScript : MonoBehaviour {
 	public GameObject reStartButton;
 	public GameObject startButton;
 	public GameObject hero;
+	public GameObject mainCamera;
 	public int startPosition;
 	int score = 0;								//the player's score
 	bool isGameOver = false;					//is the game over?
 
+	Hero.HeroScript heroScript;
+	CameraFollowerScript cameraScript;
+
 	// Use this for initialization
 	void Start () {
-		
+		heroScript = hero.GetComponent<Hero.HeroScript>();
+		cameraScript = mainCamera.GetComponent<CameraFollowerScript>();
 	}
 
 	void Awake() {
@@ -37,9 +42,13 @@ public class GameControllerScript : MonoBehaviour {
 	public void startGame()
 	{
 		startButton.SetActive (false);
+		cameraScript.ReadyToStartGame();
+	}
+
+	public void realStartGame()
+	{
 		scoreText.gameObject.SetActive (true);
-		Hero.HeroScript script = hero.GetComponent<Hero.HeroScript>();
-		script.StartRunning();
+		heroScript.StartRunning();
 	}
 	
 	void Update() {
