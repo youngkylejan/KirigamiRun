@@ -11,6 +11,7 @@ public class GameControllerScript : MonoBehaviour {
 	public GameObject highestText;
 	public GameObject reStartButton;
 	public GameObject startButton;
+	public GameObject title;
 	public GameObject hero;
 	public GameObject mainCamera;
 	public int startPosition;
@@ -42,6 +43,7 @@ public class GameControllerScript : MonoBehaviour {
 	public void startGame()
 	{
 		startButton.SetActive (false);
+		title.SetActive (false);
 		cameraScript.ReadyToStartGame();
 	}
 
