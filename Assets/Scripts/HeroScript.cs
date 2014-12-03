@@ -100,8 +100,6 @@ public class HeroScript : MonoBehaviour {
 				}
 			} else if (HasKeyReleaseEvent() && isJumping && !toGround) {
 				toStopJumping = true;
-			} else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-				StartRunning();
 			}
 		}
 	}
