@@ -6,10 +6,14 @@ public class CameraFollowerScript : MonoBehaviour {
 
 	public float initXOffset;
 	public float startXOffset;
+	public float initYOffset;
+	public float startYOffset;
+
+	public float maxY, minY;
 	
 	public Transform player;			//target for the camera to follow
 	float xOffset;						//how much x-axis space should be between the camera and target
-	public float yOffset;
+	float yOffset;
 
 	public float xMargin = 1f;		// Distance in the x axis the player can move before the camera follows.
 	public float yMargin = 1f;		// Distance in the y axis the player can move before the camera follows.
@@ -26,6 +30,7 @@ public class CameraFollowerScript : MonoBehaviour {
 
 	void Start() {
 		xOffset = initXOffset;
+		yOffset = initYOffset;
 	}
 	
 	void Update() {
@@ -49,6 +54,7 @@ public class CameraFollowerScript : MonoBehaviour {
 
 	public void ReadyToStartGame() {
 		xOffset = startXOffset;
+		yOffset = startYOffset;
 		toMoveToStartPos = true;
 	}
 	
@@ -82,14 +88,23 @@ public class CameraFollowerScript : MonoBehaviour {
 //			// ... the target x coordinate should be a Lecrp between the camera's current x position and the player's current x position.
 //			targetX = Mathf.Lerp(transform.position.x, player.position.x + xOffset, xSmooth * Time.deltaTime);
 //		
+		float playerY = player.position.y + yOffset;
+		if (playerY < minY) {
+			playerY = minY;
+		} else if (playerY > maxY) {
+			playerY = maxY;
+		}
+		
 		// If the player has moved beyond the y margin...
 		if(CheckYMargin())
 			// ... the target y coordinate should be a Lerp between the camera's current y position and the player's current y position.
-			targetY = Mathf.Lerp(transform.position.y, player.position.y + yOffset, ySmooth * Time.deltaTime);
+			targetY = Mathf.Lerp(transform.position.y, playerY, ySmooth * Time.deltaTime);
 		
 //		// The target x and y coordinates should not be larger than the maximum or smaller than the minimum.
 //		targetX = Mathf.Clamp(targetX, minXAndY.x, maxXAndY.x);
 //		targetY = Mathf.Clamp(targetY, minXAndY.y, maxXAndY.y);
+
+
 //		
 		// Set the camera's position to the target position with the same z component.
 		transform.position = new Vector3(targetX, targetY, transform.position.z);
