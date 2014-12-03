@@ -39,7 +39,7 @@ namespace Kirigami {
 
 				GameObject cloud = cloudList[0];
 
-				if (cloud.transform.position.x < pos.x - offset * 2) {
+				if (cloud.transform.position.x < pos.x - offset * 3) {
 					Destroy(cloud);
 					cloudList.RemoveAt(0);
 				} else {
@@ -68,7 +68,7 @@ namespace Kirigami {
 
 				GameObject skyMonster = skyMonsterList[0];
 
-				if (skyMonster.transform.position.x < pos.x - offset * 2) {
+				if (skyMonster.transform.position.x < pos.x - offset * 3) {
 					Destroy(skyMonster);
 					skyMonsterList.RemoveAt(0);
 				} else {
