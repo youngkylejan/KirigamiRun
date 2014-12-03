@@ -70,14 +70,12 @@ public class GameControllerScript : MonoBehaviour {
 		if(PlayerPrefs.HasKey("Highest") == false){
 			
 			PlayerPrefs.SetInt("Highest",score);
-			print ("null");
 			return;
 			
 		}else{
 			
 			if(PlayerPrefs.GetInt("Highest") < score){
 				PlayerPrefs.SetInt("Highest",score);
-				print (PlayerPrefs.GetInt("Highest"));
 			}
 		}
 	}
@@ -89,7 +87,7 @@ public class GameControllerScript : MonoBehaviour {
 		activateGameOverText ();
 
 		isGameOver = true;
-			print ("HERO DIE");
+//			print ("HERO DIE");
 	}
 
 	public void activateGameOverText()
