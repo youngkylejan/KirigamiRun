@@ -49,6 +49,8 @@ public class GameControllerScript : MonoBehaviour {
 	{
 		scoreText.gameObject.SetActive (true);
 		heroScript.StartRunning();
+
+		mainCamera.GetComponentInChildren<AudioSource>().Play();
 	}
 	
 	void Update() {
@@ -88,6 +90,8 @@ public class GameControllerScript : MonoBehaviour {
 
 		isGameOver = true;
 //			print ("HERO DIE");
+
+		mainCamera.GetComponentInChildren<AudioSource>().Stop();
 	}
 
 	public void activateGameOverText()
