@@ -94,7 +94,7 @@ namespace Kirigami {
 
 			Vector2 velocity = hero.rigidbody2D.velocity;
 
-			float maxDistance = velocity.x * 2f;
+			float maxDistance = velocity.x * 1.9f;
 			float minDistance = groundWidth + 3f;
 
 			float unitDistance = maxDistance / difficultInterval;
