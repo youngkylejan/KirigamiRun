@@ -10,9 +10,6 @@ public class GroundScript : MonoBehaviour {
 	}
 
 	void Start() {
-		var renderer = gameObject.GetComponent<Renderer>();
-		float width = renderer.bounds.size.x;
-		float height = renderer.bounds.size.y;
-		print (width + " " + height);
+		
 	}
 }

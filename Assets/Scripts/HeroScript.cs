@@ -156,7 +156,7 @@ public class HeroScript : MonoBehaviour {
 
 			float a = 1.0f / Mathf.Pow((currentSpeed / MAX_SPEED) * 2.5f + 1.5f, 2.0f);
 			currentSpeed += a * waitSec;
-			print ("BEGIN ACELERATING " + currentSpeed);
+//			print ("BEGIN ACELERATING " + currentSpeed);
 		}
 	}
 }
