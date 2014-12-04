@@ -66,7 +66,7 @@ public class GameControllerScript : MonoBehaviour {
 		if (!isGameOver) {
 
 			score = (int)hero.transform.position.x - startPosition;
-			scoreText.text = "Score: " + score;
+			scoreText.text = "Score: " + ((score < 0) ? 0 : score);
 		}
 	}
 
