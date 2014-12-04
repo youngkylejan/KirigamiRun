@@ -32,8 +32,8 @@ public class GameControllerScript : MonoBehaviour {
 
 		heros = new GameObject[] {
 				GameObject.Find("Hero/StupidDragonBody"),
-//				GameObject.Find("Hero/DragonBody"),
-//				GameObject.Find("Hero/CuteBody"),
+				GameObject.Find("Hero/DragonBody"),
+				GameObject.Find("Hero/CuteBody"),
 			};
 
 		foreach (GameObject obj in heros) {
@@ -43,14 +43,14 @@ public class GameControllerScript : MonoBehaviour {
 
 		heroSelectionDisabledObjects = new GameObject[] {
 				GameObject.Find("HeroListDisabled/1"),
-//				GameObject.Find("HeroListDisabled/2"),
-//				GameObject.Find("HeroListDisabled/3"),
+				GameObject.Find("HeroListDisabled/2"),
+				GameObject.Find("HeroListDisabled/3"),
 			};
 
 		heroSelectionEnabledObjects = new GameObject[] {
 				GameObject.Find("HeroListEnabled/1"),
-//				GameObject.Find("HeroListEnabled/2"),
-//				GameObject.Find("HeroListEnabled/3"),
+				GameObject.Find("HeroListEnabled/2"),
+				GameObject.Find("HeroListEnabled/3"),
 			};
 
 		heroSelectionDisabled = GameObject.Find ("HeroListDisabled");
