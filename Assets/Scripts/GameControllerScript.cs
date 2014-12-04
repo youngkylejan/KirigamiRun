@@ -18,6 +18,10 @@ public class GameControllerScript : MonoBehaviour {
 	int score = 0;								//the player's score
 	bool isGameOver = false;					//is the game over?
 
+	GameObject[] heros;
+	GameObject[] heroSelectionDisabledObjects, heroSelectionEnabledObjects;
+	GameObject heroSelectionDisabled, heroSelectionEnabled;
+
 	Hero.HeroScript heroScript;
 	CameraFollowerScript cameraScript;
 
@@ -25,6 +29,42 @@ public class GameControllerScript : MonoBehaviour {
 	void Start () {
 		heroScript = hero.GetComponent<Hero.HeroScript>();
 		cameraScript = mainCamera.GetComponent<CameraFollowerScript>();
+
+		heros = new GameObject[] {
+				GameObject.Find("Hero/StupidDragonBody"),
+//				GameObject.Find("Hero/DragonBody"),
+//				GameObject.Find("Hero/CuteBody"),
+			};
+
+		foreach (GameObject obj in heros) {
+			obj.SetActive(false);
+		}
+		heros[0].SetActive(true);
+
+		heroSelectionDisabledObjects = new GameObject[] {
+				GameObject.Find("HeroListDisabled/1"),
+//				GameObject.Find("HeroListDisabled/2"),
+//				GameObject.Find("HeroListDisabled/3"),
+			};
+
+		heroSelectionEnabledObjects = new GameObject[] {
+				GameObject.Find("HeroListEnabled/1"),
+//				GameObject.Find("HeroListEnabled/2"),
+//				GameObject.Find("HeroListEnabled/3"),
+			};
+
+		heroSelectionDisabled = GameObject.Find ("HeroListDisabled");
+		heroSelectionEnabled = GameObject.Find ("HeroListEnabled");
+
+		for (int i = 0; i < heroSelectionDisabledObjects.Length; ++i) {
+			heroSelectionEnabledObjects[i].SetActive(false);
+		}
+
+		heroSelectionDisabled.SetActive(false);
+		heroSelectionEnabled.SetActive(false);
+
+		heroSelectionEnabledObjects[0].SetActive(true);
+		heroSelectionDisabledObjects[0].SetActive(false);
 	}
 
 	void Awake() {
@@ -46,6 +86,9 @@ public class GameControllerScript : MonoBehaviour {
 		title.SetActive (false);
 		cameraScript.ReadyToStartGame();
 		heroScript.Ready();
+
+		heroSelectionDisabled.SetActive(false);
+		heroSelectionEnabled.SetActive(false);
 	}
 
 	public void realStartGame()
@@ -66,7 +109,7 @@ public class GameControllerScript : MonoBehaviour {
 		if (!isGameOver) {
 
 			score = (int)hero.transform.position.x - startPosition;
-			scoreText.text = "Score: " + score;
+			scoreText.text = "Score: " + ((score < 0) ? 0 : score);
 		}
 	}
 
@@ -92,8 +135,6 @@ public class GameControllerScript : MonoBehaviour {
 		activateGameOverText ();
 
 		isGameOver = true;
-//			print ("HERO DIE");
-
 		mainCamera.GetComponentInChildren<AudioSource>().Stop();
 	}
 
@@ -108,6 +149,23 @@ public class GameControllerScript : MonoBehaviour {
 		reStartButton.SetActive (true);
 		
 		scoreText.gameObject.SetActive (false);
+	}
+
+	public void heroSelection(int index) {
+		index -= 1;
+		for (int i = 0; i < heroSelectionEnabledObjects.Length; ++i) {
+			if (i == index) {
+				heroSelectionEnabledObjects[i].SetActive(true);
+				heroSelectionDisabledObjects[i].SetActive(false);
+				heros[i].SetActive(true);
+			} else {
+				heroSelectionEnabledObjects[i].SetActive(false);
+				heroSelectionDisabledObjects[i].SetActive(true);
+				heros[i].SetActive(false);
+			}
+		}
+
+		heroScript.RefreshHero();
 	}
 }
 }

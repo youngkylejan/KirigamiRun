@@ -45,15 +45,6 @@ public class HeroBodyScript : MonoBehaviour {
 	public void TriggerReady() {
 		anim.SetTrigger ("Ready");
 	}
-
-	void OnCollisionEnter2D(Collision2D other) {
-
-		if (other.gameObject.tag == "DeadBlock") {
-			heroScript.Die();
-		} else {
-			heroScript.Die ();
-		}
-	}
 }
 
 }

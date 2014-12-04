@@ -80,6 +80,10 @@ public class HeroScript : MonoBehaviour {
 		StopCoroutine("IncreasingSpeedRandomly");
 	}
 
+	public void RefreshHero() {
+		bodyScript = gameObject.GetComponentInChildren<HeroBodyScript> ();
+	}
+
 	// Private functions
 
 	// Use this for initialization
