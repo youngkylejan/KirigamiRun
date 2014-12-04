@@ -134,7 +134,7 @@ namespace Kirigami {
 
 		void GenerateGrounds() {
 
-			int groundNumber = Random.Range (1, 4);
+			int groundNumber = Random.Range (2, 5);
 			bool firstFlag = true;
 			bool difficult = false;
 
