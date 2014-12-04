@@ -13,6 +13,7 @@ public class HeroScript : MonoBehaviour {
 	public float recoverSeconds = 120;
 	public float normalGravityScale = 5;
 	public float falldownGravityScale = 1.5f;
+	public float initialRunningSpeed = 2.0f;
 
 	float currentSpeed;
 	const int MAX_JUMP_TIMES = 2;
@@ -50,8 +51,15 @@ public class HeroScript : MonoBehaviour {
 	public void StartRunning() {
 		if (!isStarted) {
 			isStarted = true;
-			bodyScript.TriggerStart();
+			Vector3 scale = transform.localScale;
+			scale.x = scale.x > 0 ? scale.x : scale.x * -1;
+			transform.localScale = scale;
+
+			Vector2 v = rigidbody2D.velocity;
+			v.x = 0;
+			rigidbody2D.velocity = v;
 			StartCoroutine ("IncreasingSpeedRandomly");
+			StopCoroutine ("InitialRunning");
 		}
 	}
 
@@ -76,6 +84,8 @@ public class HeroScript : MonoBehaviour {
 	void Start () {
 		bodyScript = gameObject.GetComponentInChildren<HeroBodyScript> ();
 		currentSpeed = baseSpeed;
+
+		StartCoroutine("InitialRunning");
 	}
 
 	bool HasKeyDownEvent() {
@@ -142,6 +152,8 @@ public class HeroScript : MonoBehaviour {
 
 		if (isStarted && !isFalldown) {
 			rigidbody2D.velocity = new Vector2(currentSpeed, rigidbody2D.velocity.y);
+		} else {
+			
 		}
 	}
 
@@ -157,6 +169,22 @@ public class HeroScript : MonoBehaviour {
 			float a = 1.0f / Mathf.Pow((currentSpeed / MAX_SPEED) * 2.5f + 1.5f, 2.0f);
 			currentSpeed += a * waitSec;
 //			print ("BEGIN ACELERATING " + currentSpeed);
+		}
+	}
+
+	IEnumerator InitialRunning() {
+		float current_xscale = 1;
+		while (true) {
+			Vector3 scale = transform.localScale;
+			scale.x *= -1;
+			transform.localScale = scale;
+			
+			Vector2 v = rigidbody2D.velocity;
+			v.x = initialRunningSpeed * current_xscale * -1;
+			rigidbody2D.velocity = v;
+			yield return new WaitForSeconds(4);
+
+			current_xscale *= -1;
 		}
 	}
 }

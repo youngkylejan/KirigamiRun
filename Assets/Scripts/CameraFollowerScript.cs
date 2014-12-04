@@ -23,7 +23,12 @@ public class CameraFollowerScript : MonoBehaviour {
 //	public Vector2 minXAndY;		// The minimum x and y coordinates the camera can have.
 
 	bool toMoveToStartPos = false;
+	bool toFollowHeroX = false;
 	
+	public void StartGame() {
+		toFollowHeroX = true;
+	}
+
 	void Awake () {
 
 	}
@@ -55,6 +60,7 @@ public class CameraFollowerScript : MonoBehaviour {
 	public void ReadyToStartGame() {
 		xOffset = startXOffset;
 		yOffset = startYOffset;
+		toFollowHeroX = true;
 		toMoveToStartPos = true;
 	}
 	
@@ -80,7 +86,7 @@ public class CameraFollowerScript : MonoBehaviour {
 	void TrackPlayer () {
 		// By default the target x and y coordinates of the camera are it's current x and y coordinates.
 //		float targetX = transform.position.x;
-		float targetX = player.position.x + xOffset;
+		float targetX = toFollowHeroX ? player.position.x + xOffset : transform.position.x;
 		float targetY = transform.position.y;
 		
 		// If the player has moved beyond the x margin...
