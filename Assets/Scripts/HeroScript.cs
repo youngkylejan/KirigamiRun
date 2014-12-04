@@ -48,18 +48,24 @@ public class HeroScript : MonoBehaviour {
 		toRecover = true;
 	}
 
+	public void Ready() {
+		Vector2 v = rigidbody2D.velocity;
+		v.x = 0;
+		rigidbody2D.velocity = v;
+		bodyScript.TriggerReady();
+
+		Vector3 scale = transform.localScale;
+		scale.x = scale.x > 0 ? scale.x : scale.x * -1;
+		transform.localScale = scale;
+	}
+
 	public void StartRunning() {
 		if (!isStarted) {
 			isStarted = true;
-			Vector3 scale = transform.localScale;
-			scale.x = scale.x > 0 ? scale.x : scale.x * -1;
-			transform.localScale = scale;
-
-			Vector2 v = rigidbody2D.velocity;
-			v.x = 0;
-			rigidbody2D.velocity = v;
 			StartCoroutine ("IncreasingSpeedRandomly");
 			StopCoroutine ("InitialRunning");
+
+			bodyScript.TriggerStart();
 		}
 	}
 
@@ -72,10 +78,6 @@ public class HeroScript : MonoBehaviour {
 
 		Kirigami.GameControllerScript.current.HeroDied();
 		StopCoroutine("IncreasingSpeedRandomly");
-	}
-
-	public Vector2 CurrentVelocity() {
-		return rigidbody2D.velocity;
 	}
 
 	// Private functions

@@ -45,6 +45,7 @@ public class GameControllerScript : MonoBehaviour {
 		startButton.SetActive (false);
 		title.SetActive (false);
 		cameraScript.ReadyToStartGame();
+		heroScript.Ready();
 	}
 
 	public void realStartGame()
