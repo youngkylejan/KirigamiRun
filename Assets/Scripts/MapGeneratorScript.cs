@@ -8,8 +8,6 @@ namespace Kirigami {
 
 		const float mapLength = 20.48f;
 		const float offset = 22.24f;
-//		const float groundWidth = 2.18f;
-//		const float groundHeight = 8.9f;
 		const float removeRate = 2f;
 		const float generateRate = 0.5f;
 
