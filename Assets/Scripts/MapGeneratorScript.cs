@@ -8,8 +8,8 @@ namespace Kirigami {
 
 		const float mapLength = 20.48f;
 		const float offset = 22.24f;
-		const float groundWidth = 2.18f;
-		const float groundHeight = 8.9f;
+//		const float groundWidth = 2.18f;
+//		const float groundHeight = 8.9f;
 		const float removeRate = 2f;
 		const float generateRate = 0.5f;
 
@@ -24,6 +24,8 @@ namespace Kirigami {
 		int easyTimes;
 		int hardTimes;
 
+		public float groundWidth;
+		public float groundHeight;
 		public GameObject groundPrefab;
 		public Camera mainCamera;
 		public GameObject hero;
@@ -34,8 +36,11 @@ namespace Kirigami {
 			Random.seed = System.Guid.NewGuid().GetHashCode();
 			easyTimes = 0;
 			hardTimes = 0;
-
 			InitialFirstMap();
+
+			groundWidth = GameObject.Find ("ground(Clone)").renderer.bounds.size.x;
+			groundHeight = GameObject.Find ("ground(Clone)").renderer.bounds.size.y;
+
 			StartCoroutine("Generator");
 			StartCoroutine("Remover");
 		}
