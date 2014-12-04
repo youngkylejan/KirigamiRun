@@ -51,7 +51,6 @@ public class HeroBodyScript : MonoBehaviour {
 		if (other.gameObject.tag == "DeadBlock") {
 			heroScript.Die();
 		} else {
-			print ("HERE??");
 			heroScript.Die ();
 		}
 	}
