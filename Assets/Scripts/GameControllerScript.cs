@@ -36,11 +36,6 @@ public class GameControllerScript : MonoBehaviour {
 				GameObject.Find("Hero/CuteBody"),
 			};
 
-		foreach (GameObject obj in heros) {
-			obj.SetActive(false);
-		}
-		heros[0].SetActive(true);
-
 		heroSelectionDisabledObjects = new GameObject[] {
 				GameObject.Find("HeroListDisabled/1"),
 				GameObject.Find("HeroListDisabled/2"),
@@ -63,6 +58,11 @@ public class GameControllerScript : MonoBehaviour {
 		heroSelectionDisabled.SetActive(false);
 		heroSelectionEnabled.SetActive(false);
 
+		for (int i = 1; i < heros.Length; ++i) {
+			heros[i].SetActive(false);
+		}
+		heros[0].SetActive(true);
+		heroScript.RefreshHero();
 		heroSelectionEnabledObjects[0].SetActive(true);
 		heroSelectionDisabledObjects[0].SetActive(false);
 	}

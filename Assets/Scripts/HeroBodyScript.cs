@@ -8,13 +8,9 @@ public class HeroBodyScript : MonoBehaviour {
 
 	Animator anim;					//reference to the animator component
 
-	HeroScript heroScript;
-
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
-
-		heroScript = gameObject.GetComponentInParent<HeroScript> ();
 	}
 	
 	// Update is called once per frame
