@@ -7,7 +7,7 @@ This is a project for HKU COMP7506 (Smartphone Apps Development).
 * [Ethan Wang](https://github.com/kylejan)
 * [Y. T. Chung](https://github.com/zonyitoo)
 * [Vincent Ma](https://github.com/vincent090718)
-* [Daca Ao](https://github.com/dacaowj)
+* [Daca Ao](https://github.com/daca-ao)
 
 ## Build
 
